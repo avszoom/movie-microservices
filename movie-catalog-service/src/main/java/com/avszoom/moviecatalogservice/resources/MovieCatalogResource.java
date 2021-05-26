@@ -5,6 +5,7 @@ import com.avszoom.moviecatalogservice.models.Movie;
 import com.avszoom.moviecatalogservice.models.Rating;
 import com.avszoom.moviecatalogservice.models.UserRating;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,7 +25,7 @@ public class MovieCatalogResource {
     @Autowired
     private WebClient.Builder webClientBuilder;
 
-    @RequestMapping("/{userId}")
+    @GetMapping("/{userId}")
     public List<CatalogItem> getCatalog(@PathVariable("userId") String userId) {
     /*
     *  rest template is provided by spring framework , to make a call to other services, it also helps in unbinding
@@ -32,11 +33,11 @@ public class MovieCatalogResource {
     * */
 
 
-        UserRating userRating = restTemplate.getForObject("http://localhost:8083/ratingsdata/users/" + userId,
+        UserRating userRating = restTemplate.getForObject("http://rating-data-service/ratingsdata/users/" + userId,
                 UserRating.class);
         return userRating.getUserRatings().stream().map(rating -> {
 
-            Movie movie = restTemplate.getForObject("http://localhost:8082/movies/"+rating.getMovieId(), Movie.class);
+            Movie movie = restTemplate.getForObject("http://movie-info-service/movies/"+rating.getMovieId(), Movie.class);
             return new CatalogItem(movie.getName(), "movie", rating.getRating());
         }).collect(Collectors.toList());
 
