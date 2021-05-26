@@ -5,11 +5,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /*
 * This tells application is spring boot and start scanning and launch server
 * */
 @SpringBootApplication
+@EnableSwagger2
 public class MovieCatalogServiceApplication {
 
 	/*
